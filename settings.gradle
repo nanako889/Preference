@@ -1,0 +1,1 @@
+include ':app', ':preference-compiler', ':preference-core', ':preference-annotation'
