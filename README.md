@@ -20,20 +20,22 @@
 
 
 -keep public class com.qbw.annotation.preference.SharedPreference {*;}
+
 -keepclasseswithmembers class * implements com.qbw.annotation.preference.core.IHost {}
 
 
 #Gradle
 
 
-allprojects {
-    repositories {
-        jcenter()
-        maven { url "https://jitpack.io" }
+    allprojects {
+        repositories {
+            jcenter()
+            maven { url "https://jitpack.io" }
+        }
     }
-}
 
 compile 'com.github.qbaowei.Preference:preference-core:1.0.0'
+
 provided 'com.github.qbaowei.Preference:preference-compiler:1.0.0'
 
 
