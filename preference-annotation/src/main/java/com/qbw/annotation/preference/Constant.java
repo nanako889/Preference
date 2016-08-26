@@ -1,4 +1,4 @@
-package com.qbw.annotation.compiler.preference.common;
+package com.qbw.annotation.preference;
 
 /**
  * @author QBW
@@ -10,7 +10,7 @@ package com.qbw.annotation.compiler.preference.common;
 
 public class Constant {
 
-    public static final String REFERENCE_CLASS_PACKAGE = "com.qbw.annotation.core.preference.reference";
+    public static final String REFERENCE_CLASS_PACKAGE = "com.qbw.annotation.preference.core";
     public static final String POET_CLASS_PACKAGE = "com.qbw.annotation";
     public static final String LINK = "$$";
     public static final String SUFFIX = "PREFERENCE";
@@ -22,6 +22,7 @@ public class Constant {
     public static final String SN_FLOAT = "Float";
     public static final String SN_BOOLEAN = "Boolean";
     public static final String SN_STRING_ARR = "String[]";
+    public static final String SN_LIST = "List";
 
     public static String appendSuffix(String className) {
         return className + LINK + SUFFIX;

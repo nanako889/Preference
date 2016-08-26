@@ -2,7 +2,7 @@ package com.qbw.annotation.preference;
 
 import android.app.Application;
 
-import com.qbw.annotation.core.preference.reference.Preference;
+import com.qbw.annotation.Preference;
 import com.qbw.log.XLog;
 
 /**
@@ -19,5 +19,6 @@ public class XApplication extends Application {
         super.onCreate();
         Preference.init(this);
         XLog.setDebug(true);
+        XLog.setSaveToFile("Preference");
     }
 }

@@ -2,18 +2,17 @@ package com.qbw.annotation.preference;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.qbw.annotation.core.preference.reference.Preference;
+import com.qbw.annotation.Preference;
+import com.qbw.annotation.preference.core.IHost;
 import com.qbw.log.XLog;
 import com.test.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -24,18 +23,16 @@ public class MainActivity extends Activity {
     protected EditText mEtWeight;
     protected CheckBox mCb;
 
-    //@SharedPreference
+    @SharedPreference
     String name;
     @SharedPreference
     int age;
-    //@SharedPreference
+    @SharedPreference
     long id;
-    //@SharedPreference
+    @SharedPreference
     float weight;
-    //@SharedPreference
+    @SharedPreference
     boolean man;
-    //@SharedPreference
-    String[] data;
 
     private TestPreference mTestPreference = new TestPreference();
 
@@ -43,13 +40,13 @@ public class MainActivity extends Activity {
 
     private Test mTest = new Test();
 
-    public static class TestPreference {
-        //@SharedPreference
-        String testName;
+    public static class TestPreference implements IHost {
+        @SharedPreference
+        String test1;
 
-        public static class TestPreference1 {
-           // @SharedPreference
-            int age;
+        public static class TestPreference1 implements IHost {
+            @SharedPreference
+            int test2;
         }
     }
 
@@ -58,8 +55,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_main);
         initView();
-        Map map = new HashMap();
-        map.put("0", 1);
     }
 
     private void initView() {
@@ -69,19 +64,20 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Preference.restore(MainActivity.this);//此处千万不要传入'this'
-                //mEt.setText(name);
+                mEt.setText(name);
                 mEtAge.setText(age + "");
-                //mEtId.setText(id + "");
-                //mEtWeight.setText(weight + "");
-                //mCb.setChecked(man);
+                mEtId.setText(id + "");
+                mEtWeight.setText(weight + "");
+                mCb.setChecked(man);
 
-//                Preference.restore(mTestPreference);
-//
-//                Preference.restore(mTestPreference1);
-//                XLog.v("mTestPreference1.age = " + mTestPreference1.age);
-//
-//                Preference.restore(mTest);
-//                XLog.v("mTest.sex = %s", mTest.getSex());
+                Preference.restore(mTestPreference);
+                XLog.v("mTestPreference.test1 = %s", mTestPreference.test1);
+
+                Preference.restore(mTestPreference1);
+                XLog.v("mTestPreference1.test2 = %d", mTestPreference1.test2);
+
+                Preference.restore(mTest);
+                XLog.v("mTest.sex = %s", mTest.getSex());
             }
         });
         mEtAge = (EditText) findViewById(R.id.et_age);
@@ -99,29 +95,33 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        try {
-            name = mEt.getText().toString();
-            age = Integer.parseInt(mEtAge.getText().toString());
-//            id = Long.parseLong(mEtId.getText().toString());
-//            weight = Float.parseFloat(mEtWeight.getText().toString());
-//            data = new String[4];
-//            data[0] = name;
-//            data[1] = age + "";
-//            data[2] = id + "";
-//            data[3] = weight + "";
-            Preference.save(this);
-
-//            mTestPreference.testName = name;
-//            Preference.save(mTestPreference);
-//
-//            mTestPreference1.age = age;
-//            Preference.save(mTestPreference1);
-//
-//            mTest.setSex(mCb.isChecked() ? "boy" : "girl");
-//            Preference.save(mTest);
-        } catch (Exception e) {
-            XLog.e(e);
+        name = mEt.getText().toString();
+        String strAge = mEtAge.getText().toString();
+        if (!TextUtils.isEmpty(strAge)) {
+            age = Integer.parseInt(strAge);
+        }
+        String strId = mEtId.getText().toString();
+        if (!TextUtils.isEmpty(strId)) {
+            id = Long.parseLong(strId);
+        }
+        String strWeight = mEtWeight.getText().toString();
+        if (!TextUtils.isEmpty(strWeight)) {
+            weight = Float.parseFloat(strWeight);
         }
 
+        Preference.save(this);
+
+        mTestPreference.test1 = name;
+        Preference.save(mTestPreference);
+
+        mTestPreference1.test2 = age;
+        Preference.save(mTestPreference1);
+
+        mTest.setSex(mCb.isChecked() ? "boy" : "girl");
+        Preference.save(mTest);
+
+        Preference.clear(mTestPreference);
+        //Preference.clear(this);
+        //Preference.clearAll();
     }
 }

@@ -1,4 +1,4 @@
-package com.qbw.annotation.compiler.preference.common;
+package com.qbw.annotation.preference.compiler.common;
 
 import javax.annotation.processing.Messager;
 import javax.tools.Diagnostic;

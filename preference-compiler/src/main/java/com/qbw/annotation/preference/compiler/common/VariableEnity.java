@@ -1,4 +1,4 @@
-package com.qbw.annotation.compiler.preference.common;
+package com.qbw.annotation.preference.compiler.common;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -15,25 +15,21 @@ import javax.lang.model.type.TypeMirror;
 
 public class VariableEnity {
 
-    private String mName;
+    private String mName;//变量名
+    private TypeMirror mTypeMirror;//类型信息
 
     private String mType;//经典的包名类名组合(getCanonicalName)
-
-    private TypeMirror mTypeMirror;
 
     public VariableEnity(String name, TypeMirror typeMirror) {
         mName = name;
         mTypeMirror = typeMirror;
         mType = mTypeMirror.toString();
         convertType();
+        Log.i(String.format("name[%s] type[%s]", mName, mType));
     }
 
     public String getName() {
         return mName;
-    }
-
-    public String getType() {
-        return mType;
     }
 
     public String getSimpleClassName() {
@@ -55,5 +51,4 @@ public class VariableEnity {
             mType = "java.lang.Boolean";
         }
     }
-
 }
