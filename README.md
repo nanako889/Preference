@@ -26,3 +26,20 @@
 #Gradle
 
 
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+compile 'com.github.qbaowei.Preference:preference-core:1.0.0'
+provided 'com.github.qbaowei.Preference:preference-compiler:1.0.0'
+
+
+#Author
+
+
+qbaowei@qq.com
+
+
