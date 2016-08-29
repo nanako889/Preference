@@ -1,5 +1,6 @@
 package com.qbw.annotation.preference.compiler;
 
+import com.qbw.annotation.preference.Constant;
 import com.qbw.annotation.preference.compiler.common.AbstractPoet;
 import com.qbw.annotation.preference.compiler.common.ClassNames;
 import com.qbw.annotation.preference.compiler.common.VariableEnity;
@@ -16,8 +17,6 @@ import javax.lang.model.element.Modifier;
 
 import static com.qbw.annotation.preference.compiler.common.ClassNames.PREFERENCE;
 import static com.qbw.annotation.preference.compiler.common.ClassNames.PREFERENCE_UTIL;
-import static com.qbw.annotation.preference.Constant.INNER_LINK;
-import static com.qbw.annotation.preference.Constant.SPLIT;
 
 /**
  * @author QBW
@@ -67,25 +66,28 @@ public class ParasitePoet extends AbstractPoet {
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder(M_SAVE).addAnnotation(Override.class).addModifiers(Modifier.PUBLIC).
                 addParameter(ParameterSpec.builder(ClassName.OBJECT, P_TARGET).build()).
-                addStatement("$L = ($T) $L", F_TARGET, mHostClassName, P_TARGET);
+                addStatement("$L = ($T) $L", F_TARGET, mHostClassName, P_TARGET).
+                addStatement("$T tcn = $L.getClass().getName()", ClassNames.STRING, F_TARGET);
         for (VariableEnity variableEnity : mVariableNames) {
-            builder.addStatement("$L.put($S, $S, mTarget.$L)", F_PUTIL, getKey(variableEnity.getName()), variableEnity.getSimpleClassName(), variableEnity.getName());
+            builder.addStatement("$L.put(tcn + $S, $S, mTarget.$L)", F_PUTIL, getKey(variableEnity.getName()), variableEnity.getSimpleClassName(), variableEnity.getName());
         }
         methodSpecs.add(builder.build());
 
         builder = MethodSpec.methodBuilder(M_RESTORE).addModifiers(Modifier.PUBLIC).addAnnotation(Override.class).
                 addParameter(ParameterSpec.builder(ClassName.OBJECT, P_TARGET).build()).
-                addStatement("$L = ($T) $L", F_TARGET, mHostClassName, P_TARGET);
+                addStatement("$L = ($T) $L", F_TARGET, mHostClassName, P_TARGET).
+                addStatement("$T tcn = $L.getClass().getName()", ClassNames.STRING, F_TARGET);
         for (VariableEnity variableEnity : mVariableNames) {
-            builder.addStatement("$L.$L = ($T) $L.get($S, $S)", F_TARGET, variableEnity.getName(), variableEnity.getPoetTypeName(), F_PUTIL, getKey(variableEnity.getName()), variableEnity.getSimpleClassName());
+            builder.addStatement("$L.$L = ($T) $L.get(tcn + $S, $S)", F_TARGET, variableEnity.getName(), variableEnity.getPoetTypeName(), F_PUTIL, getKey(variableEnity.getName()), variableEnity.getSimpleClassName());
         }
         methodSpecs.add(builder.build());
 
         builder = MethodSpec.methodBuilder(M_CLEAR).addAnnotation(Override.class).addModifiers(Modifier.PUBLIC).
                 addParameter(ParameterSpec.builder(ClassName.OBJECT, P_TARGET).build()).
-                addStatement("$L = ($T) $L", F_TARGET, mHostClassName, P_TARGET);
+                addStatement("$L = ($T) $L", F_TARGET, mHostClassName, P_TARGET).
+                addStatement("$T tcn = $L.getClass().getName()", ClassNames.STRING, F_TARGET);
         for (VariableEnity variableEnity : mVariableNames) {
-            builder.addStatement("$L.$L($S)", F_PUTIL, M_REMOVE, getKey(variableEnity.getName()));
+            builder.addStatement("$L.$L(tcn + $S)", F_PUTIL, M_REMOVE, getKey(variableEnity.getName()));
         }
         methodSpecs.add(builder.build());
 
@@ -93,7 +95,7 @@ public class ParasitePoet extends AbstractPoet {
     }
 
     private String getKey(String variableName) {
-        return SPLIT + mFileClassName + INNER_LINK + variableName;
+        return Constant.INNER_LINK + variableName;
     }
 
     @Override

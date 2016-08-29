@@ -22,6 +22,9 @@ public class ClassNames {
     public static final ClassName CONTEXT = ClassName.get("android.content", "Context");
     public static final ClassName ACTIVITY = ClassName.get("android.app", "Activity");
 
+    //java
+    public static final ClassName STRING = ClassName.get(String.class);
+
     //to generate
     public static final ClassName PREFERENCE = ClassName.get(POET_CLASS_PACKAGE, "Preference");
     public static final ClassName INIT = ClassName.get(POET_CLASS_PACKAGE, "INIT" + LINK + SUFFIX);
