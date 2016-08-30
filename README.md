@@ -1,19 +1,21 @@
 #简介
 
 
-使用编译时注解,简化SharedPreference的使用.支持int,long,float,boolean,String,不支持其他的类型.变量的访问权限不可以是'Private'
+使用编译时注解,简化 SharedPreference 的使用.支持int,long,float,boolean,String,不支持其他的类型.变量的访问权限不可以是 Private
 
 
 #使用说明(请参考demo)
 
 
-1.在工程Application的onCreate函数中调用'Preference.init(this)'(说明:Preference是编译时生成的类文件,所以你必须至少标注了一个变量'@SharedPreference')
+1.在工程Application的onCreate函数中调用 Preference.init(this) (注意:Preference是编译时生成的类文件,所以你必须至少标注了一个变量 @SharedPreference 之后才会生成Preference这个类文件)
 
-2.在类中(如果不是'Activity',需要'implements IHost'-一个空接口,只是为了混淆的时候不混淆这些类),对变量标注'@SharedPreference',调用'Preference.save(对象)'保存这个对象中'@SharedPreference'变量的值到系统的SharedPreference,同理'Preference.restore(对象)'是恢复系统SharedPreference的值到具体的对象
+2.在类中(如果这个类不是 Activity 及其子类 ,需要 implements IHost , IHost 是一个空接口,只是为了混淆的时候不混淆这些类，因为框架需要根据完整的类名去获取一些对象),对变量标注 @SharedPreference ,调用 Preference.save(对象) 保存这个对象中被标注变量的值到系统的SharedPreference,同理 Preference.restore(对象) 是恢复系统SharedPreference中保存的值到对象具体的变量
 
-3.'Preference.clear(对象)',删除这个对象保存在系统SharedPreference中的值(注意:并没有修改对象变量的值,如果需要修改请在clear之后调用restore)
+3.Preference.clear(对象),删除这个对象保存在系统SharedPreference中的值(注意:并没有修改对象变量的值,如果需要修改请在clear之后调用restore)
 
-4.'Preference.clearAll',删除所有使用'@SharedPreference'变量保存在系统SharedPreference的值(注意:并没有修改对象变量的值,如果需要修改请在clearAll之后对每个对象调用restore)
+4.Preference.clearAll,删除所有使用 @SharedPreference 的变量保存在系统SharedPreference的值(注意:并没有修改对象变量的值,如果需要修改请在clearAll之后对每个对象调用restore)
+
+5.XLog.setDebug(true) 开启log，打印详细的信息
 
 
 #混淆配置
