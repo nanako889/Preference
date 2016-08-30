@@ -34,9 +34,9 @@
         }
     }
 
-compile 'com.github.qbaowei.Preference:preference-core:1.0.0'
+compile 'com.github.qbaowei.Preference:preference-core:1.2.0'
 
-provided 'com.github.qbaowei.Preference:preference-compiler:1.0.0'
+provided 'com.github.qbaowei.Preference:preference-compiler:1.2.0'
 
 
 #Author
