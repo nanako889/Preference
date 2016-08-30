@@ -13,7 +13,7 @@
 
 3.'Preference.clear(对象)',清除保存在系统SharedPreference中的值(注意:并没有修改对象变量的值,如果也需要重置,clear之后调用restore就可以了)
 
-4.'Preference.clearAll',清楚所有使用'@SharedPreference'变量的值(注意:并没有修改对象变量的值,如果也需要重置,clearAll之后调用restore就可以了)
+4.'Preference.clearAll',清除所有使用'@SharedPreference'变量的值(注意:并没有修改对象变量的值,如果也需要重置,clearAll之后调用restore就可以了)
 
 
 #混淆配置
