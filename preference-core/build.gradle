@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.github.qbaowei:XLog:1.5.0'
+    compile 'com.qbw.log:xlog:1.5.0'
     compile project(':preference-annotation')
 }
