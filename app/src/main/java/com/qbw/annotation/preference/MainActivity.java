@@ -126,9 +126,7 @@ public class MainActivity extends Activity {
         mTest.setSex(mCb.isChecked() ? "boy" : "girl");
         Preference.Test().save(mTest);
 
-        //Preference.clear(mTestPreference);
-        //Preference.clear(this);
-        Preference.MainActivity().remove(this);
+        //Preference.MainActivity().remove(this);
         //Preference.clear();
     }
 
