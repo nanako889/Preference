@@ -10,8 +10,7 @@ package com.qbw.annotation.preference;
 
 public class Constant {
 
-    public static final String REFERENCE_CLASS_PACKAGE = "com.qbw.annotation.preference.core";
-    public static final String POET_CLASS_PACKAGE = "com.qbw.annotation";
+    public static final String GENERATE_CLASS_PACKAGE = "com.qbw.preference";
     public static final String LINK = "$$";
     public static final String SUFFIX = "PREFERENCE";
     public static final String SPLIT = "<_#$;_>";

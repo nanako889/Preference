@@ -20,56 +20,58 @@ import javax.lang.model.element.Modifier;
  * Created by Bond on 2016/8/14.
  */
 
-public abstract class AbstractPoet {
+public abstract class CommonPoet {
 
-    protected final String M_G_INST = "getInstance";
     protected final String M_G_CONTEXT = "getContext";
     protected final String M_SAVE = "save";
     protected final String M_RESTORE = "restore";
-    protected final String M_CLEAR = "clear";
+    protected final String M_G_PUTIL = "getPreferenceUtil";
+    protected final String M_G_INST = "getInstance";
 
-    protected final String F_TARGET = "mTarget";
     protected final String P_TARGET = "target";
+    protected final String F_PUTIL = "mPUtil";
 
     protected final String FILE_HEADER = "\nThis file is generated and should not be edited!\n\nAuthor:qbaowei@qq.com\n";
 
-
-    protected Filer mFiler;
-
-    protected String mPackageName;
     /**
      * inner class(If 'Test' is a innerclass, so com.test.MainActivity.Test, for'Test' its SimpleClassName is 'Test', ComplexClassName is 'MainActivity.Test')
      */
-    protected String mComplexClassName;
-    protected String mSimpleClassName;
 
-    protected String mFileClassName;
+    protected Filer mFiler;
 
-    protected ClassName mTargetClassName;
+    protected String mHostPackageName;
+    protected String mHostComplexClassName;
+    protected ClassName mHostClassName;
 
-    public AbstractPoet(Filer filer, String packageName, String complexClassName, String simpleClassName) {
+    protected String mGeneratePackageName;
+    protected String mGenerateComplexClassName;
+    protected ClassName mGenerateClassName;
+
+    public CommonPoet(Filer filer, String hostPackageName, String hostComplexClassName, String generatePackageName, String generateComplexClassName) {
         mFiler = filer;
-        mPackageName = packageName;
-        mComplexClassName = complexClassName;
-        mSimpleClassName = simpleClassName;
-        mFileClassName = mComplexClassName.replace(".", Constant.INNER_LINK);
-        mTargetClassName = ClassName.get(mPackageName, mFileClassName);
+
+        mHostPackageName = hostPackageName;
+        mHostComplexClassName = hostComplexClassName;
+        mHostClassName = ClassName.get(mHostPackageName, mHostComplexClassName);
+
+        mGeneratePackageName = generatePackageName;
+        mGenerateComplexClassName = generateComplexClassName.replace(".", Constant.INNER_LINK);
+        mGenerateClassName = ClassName.get(mGeneratePackageName, mGenerateComplexClassName);
     }
 
     public void generate() {
 
-        Log.i("Start to generate code for " + mTargetClassName.toString());
+        Log.i("Start to generate code for " + mGenerateClassName.toString());
         TypeSpec.Builder bTypeSpec;
         if (TypeSpec.Kind.CLASS == getKind()) {
-            bTypeSpec = TypeSpec.classBuilder(mTargetClassName);
+            bTypeSpec = TypeSpec.classBuilder(mGenerateClassName);
         } else {
-            bTypeSpec = TypeSpec.interfaceBuilder(mTargetClassName);
+            bTypeSpec = TypeSpec.interfaceBuilder(mGenerateClassName);
         }
         bTypeSpec.addModifiers(Modifier.PUBLIC);
         if (null != getParent()) {
             bTypeSpec.addSuperinterface(getParent());
         }
-
         CodeBlock staticBlock = getStaticBlock();
         if (null != staticBlock) {
             bTypeSpec.addStaticBlock(staticBlock);
@@ -81,7 +83,7 @@ public abstract class AbstractPoet {
         for (MethodSpec methodSpec : getMethods()) {
             bTypeSpec.addMethod(methodSpec);
         }
-        JavaFile javaFile = JavaFile.builder(mPackageName, bTypeSpec.build()).addFileComment(FILE_HEADER).
+        JavaFile javaFile = JavaFile.builder(mGeneratePackageName, bTypeSpec.build()).addFileComment(FILE_HEADER).
                 build();
         try {
             javaFile.writeTo(mFiler);
@@ -96,8 +98,28 @@ public abstract class AbstractPoet {
         return null;
     }
 
-    public ClassName getTargetClassName() {
-        return mTargetClassName;
+    public String getHostPackageName() {
+        return mHostPackageName;
+    }
+
+    public String getHostComplexClassName() {
+        return mHostComplexClassName;
+    }
+
+    public ClassName getHostClassName() {
+        return mHostClassName;
+    }
+
+    public String getGeneratePackageName() {
+        return mGeneratePackageName;
+    }
+
+    public String getGenerateComplexClassName() {
+        return mGenerateComplexClassName;
+    }
+
+    public ClassName getGenerateClassName() {
+        return mGenerateClassName;
     }
 
     protected List<FieldSpec> getFields() {

@@ -1,4 +1,4 @@
-package com.qbw.annotation.preference.core;
+package com.qbw.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,14 +14,27 @@ import static com.qbw.annotation.preference.Constant.SN_STRING;
 /**
  * @author QBW
  * @createtime 2016/08/23 09:54
- * @company 9zhitx.com
  * @description
  */
 
 
 public class PreferenceUtil {
 
-    private static PreferenceUtil sInstance;
+
+    private static PreferenceUtil sInst;
+
+    /**
+     * must be called in Application's onCreate method
+     * @param context
+     */
+    public static void init(Context context) {
+        sInst = new PreferenceUtil(context);
+    }
+
+    static PreferenceUtil getInstance() {
+        return sInst;
+    }
+
 
     private SharedPreferences mSP;
 
@@ -29,15 +42,8 @@ public class PreferenceUtil {
         mSP = context.getSharedPreferences("PreferenceUtil$$QBW_ANNOTATION", Context.MODE_PRIVATE);
     }
 
-    public static PreferenceUtil getInstance(Context context) {
-        if (null == sInstance) {
-            synchronized (PreferenceUtil.class) {
-                if (null == sInstance) {
-                    sInstance = new PreferenceUtil(context);
-                }
-            }
-        }
-        return sInstance;
+    public SharedPreferences getSP() {
+        return mSP;
     }
 
     public void put(String key, String valueClassName, Object value) {
@@ -77,6 +83,8 @@ public class PreferenceUtil {
                 String v = (String) value;
                 e.putString(key, v);
             }
+        } else {
+            XLog.e("Unsupport %s", valueClassName);
         }
         XLog.d("%s = %s", key, value);
         e.commit();
@@ -94,6 +102,8 @@ public class PreferenceUtil {
             value = mSP.getBoolean(key, false);
         } else if (SN_STRING.equals(valueClassName)) {
             value = mSP.getString(key, "");
+        } else {
+            XLog.e("Unsupport %s", valueClassName);
         }
         XLog.d("%s = %s", key, value);
         return value;

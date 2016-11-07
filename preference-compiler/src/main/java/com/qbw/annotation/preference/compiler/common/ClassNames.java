@@ -3,8 +3,7 @@ package com.qbw.annotation.preference.compiler.common;
 import com.squareup.javapoet.ClassName;
 
 import static com.qbw.annotation.preference.Constant.LINK;
-import static com.qbw.annotation.preference.Constant.POET_CLASS_PACKAGE;
-import static com.qbw.annotation.preference.Constant.REFERENCE_CLASS_PACKAGE;
+import static com.qbw.annotation.preference.Constant.GENERATE_CLASS_PACKAGE;
 import static com.qbw.annotation.preference.Constant.SUFFIX;
 
 /**
@@ -13,10 +12,7 @@ import static com.qbw.annotation.preference.Constant.SUFFIX;
 
 public class ClassNames {
     //custom(extern class)
-    public static final ClassName IPREFERENCE = ClassName.get(REFERENCE_CLASS_PACKAGE, "IParasite");
-    public static final ClassName IPREFERENCE_FLAG = ClassName.get(REFERENCE_CLASS_PACKAGE, "IHost");
-    public static final ClassName PREFERENCE_UTIL = ClassName.get(REFERENCE_CLASS_PACKAGE, "PreferenceUtil");
-    public static final ClassName PARASITE_MANAGER = ClassName.get(REFERENCE_CLASS_PACKAGE, "ParasiteManager");
+    public static final ClassName PREFERENCE_UTIL = ClassName.get(GENERATE_CLASS_PACKAGE, "PreferenceUtil");
 
     //android
     public static final ClassName CONTEXT = ClassName.get("android.content", "Context");
@@ -26,6 +22,6 @@ public class ClassNames {
     public static final ClassName STRING = ClassName.get(String.class);
 
     //to generate
-    public static final ClassName PREFERENCE = ClassName.get(POET_CLASS_PACKAGE, "Preference");
-    public static final ClassName INIT = ClassName.get(POET_CLASS_PACKAGE, "INIT" + LINK + SUFFIX);
+    public static final ClassName PREFERENCE = ClassName.get(GENERATE_CLASS_PACKAGE, "Preference");
+    public static final ClassName INIT = ClassName.get(GENERATE_CLASS_PACKAGE, "INIT" + LINK + SUFFIX);
 }

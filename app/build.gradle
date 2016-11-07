@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-//    signingConfigs {
-//        release {
-//            keyAlias 'androiddebugkey'
-//            keyPassword 'android'
-//            storeFile file('C:/Users/Administrator/.android/debug.keystore')
-//            storePassword 'android'
-//        }
-//    }
+    signingConfigs {
+        release {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/Administrator/.android/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
@@ -23,7 +24,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -31,9 +32,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-annotations:23.1.1'
-    compile 'com.github.qbaowei.Preference:preference-core:1.2.0'
-    provided 'com.github.qbaowei.Preference:preference-compiler:1.2.0'
-//    provided project(':preference-compiler')
-//    compile project(':preference-core')
+    //compile 'com.github.qbaowei.Preference:preference-core:1.2.0'
+    //provided 'com.github.qbaowei.Preference:preference-compiler:1.2.0'
+    apt project(':preference-compiler')
+    compile project(':preference-core')
 }
 

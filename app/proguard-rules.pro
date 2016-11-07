@@ -15,6 +15,3 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-
--keep public class com.qbw.annotation.preference.SharedPreference {*;}
--keepclasseswithmembers class * implements com.qbw.annotation.preference.core.IHost {}

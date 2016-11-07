@@ -9,9 +9,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.qbw.annotation.Preference;
-import com.qbw.annotation.preference.core.IHost;
 import com.qbw.log.XLog;
+import com.qbw.preference.Preference;
 import com.test.Test;
 
 public class MainActivity extends Activity {
@@ -22,6 +21,13 @@ public class MainActivity extends Activity {
     protected EditText mEtId;
     protected EditText mEtWeight;
     protected CheckBox mCb;
+
+    /**
+     * 使用限制：
+     * 1.有时候需要手动rebuild一下才会生成文件（一般都是自动的不需要，而且运行的时候也会去自动生成）
+     * 2.没有列出了的变量类型不支持
+     * 3.不可以在类名相同的类中使用，这样导致Preference.java中会生成函数名一样的函数
+     */
 
     @SharedPreference
     String name;
@@ -40,11 +46,11 @@ public class MainActivity extends Activity {
 
     private Test mTest = new Test();
 
-    public static class TestPreference implements IHost {
+    public static class TestPreference {
         @SharedPreference
         String test1;
 
-        public static class TestPreference1 implements IHost {
+        public static class TestPreference1 {
             @SharedPreference
             int test2;
         }
@@ -63,20 +69,20 @@ public class MainActivity extends Activity {
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Preference.restore(MainActivity.this);//此处千万不要传入'this'
+                Preference.MainActivity().restore(MainActivity.this);
                 mEt.setText(name);
                 mEtAge.setText(age + "");
                 mEtId.setText(id + "");
                 mEtWeight.setText(weight + "");
                 mCb.setChecked(man);
 
-                Preference.restore(mTestPreference);
+                Preference.MainActivityTestPreference().restore(mTestPreference);
                 XLog.v("mTestPreference.test1 = %s", mTestPreference.test1);
 
-                Preference.restore(mTestPreference1);
+                Preference.MainActivityTestPreferenceTestPreference1().restore(mTestPreference1);
                 XLog.v("mTestPreference1.test2 = %d", mTestPreference1.test2);
 
-                Preference.restore(mTest);
+                Preference.Test().restore(mTest);
                 XLog.v("mTest.sex = %s", mTest.getSex());
             }
         });
@@ -109,19 +115,25 @@ public class MainActivity extends Activity {
             weight = Float.parseFloat(strWeight);
         }
 
-        Preference.save(this);
+        Preference.MainActivity().save(this);
 
         mTestPreference.test1 = name;
-        Preference.save(mTestPreference);
+        Preference.MainActivityTestPreference().save(mTestPreference);
 
         mTestPreference1.test2 = age;
-        Preference.save(mTestPreference1);
+        Preference.MainActivityTestPreferenceTestPreference1().save(mTestPreference1);
 
         mTest.setSex(mCb.isChecked() ? "boy" : "girl");
-        Preference.save(mTest);
+        Preference.Test().save(mTest);
 
-        Preference.clear(mTestPreference);
+        //Preference.clear(mTestPreference);
         //Preference.clear(this);
-        //Preference.clearAll();
+        Preference.MainActivity().remove(this);
+        //Preference.clear();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

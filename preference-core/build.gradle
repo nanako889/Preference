@@ -9,7 +9,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.0"
     }
     buildTypes {
         release {
@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.qbw.log:xlog:1.5.0'
+    compile 'com.qbw.log:xlog:1.5.1'
     compile project(':preference-annotation')
 }
