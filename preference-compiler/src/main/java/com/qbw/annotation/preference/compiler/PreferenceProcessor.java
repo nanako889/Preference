@@ -2,6 +2,7 @@ package com.qbw.annotation.preference.compiler;
 
 import com.google.auto.service.AutoService;
 import com.qbw.annotation.preference.SharedPreference;
+import com.qbw.annotation.preference.SharedPreferenceDynamic;
 import com.qbw.annotation.preference.compiler.common.Log;
 import com.qbw.annotation.preference.compiler.common.VariableEnity;
 
@@ -59,34 +60,15 @@ public class PreferenceProcessor extends AbstractProcessor {
 
 
         for (Element element : roundEnvironment.getElementsAnnotatedWith(SharedPreference.class)) {
-
-            String variableName = element.toString();
-            TypeMirror variableType = element.asType();
-
-            if (ElementKind.FIELD != element.getKind()) {
-                Log.e(variableName + " should be a field variable");
+            if (!parseElement(SharedPreference.class, element)) {
                 return false;
             }
+        }
 
-            for (Modifier modifier : element.getModifiers()) {
-                if (modifier == Modifier.PRIVATE) {
-                    Log.e(variableName + " can not be Private");
-                    return false;
-                }
+        for (Element element : roundEnvironment.getElementsAnnotatedWith(SharedPreferenceDynamic.class)) {
+            if (!parseElement(SharedPreferenceDynamic.class, element)) {
+                return false;
             }
-
-            TypeElement parentElement = (TypeElement) element.getEnclosingElement();
-            String packageName = mElements.getPackageOf(parentElement).getQualifiedName().toString();
-            String className = parentElement.getQualifiedName().toString();
-            String complexClassName = className.substring(className.indexOf(packageName) +
-                    packageName.length() + 1);//Inner Class
-
-            ParasitePoet variables = mVariables.get(className);
-            if (null == variables) {
-                variables = new ParasitePoet(mFiler, packageName, complexClassName);
-                mVariables.put(className, variables);
-            }
-            variables.getVariableNames().add(new VariableEnity(variableName, variableType));
         }
 
         if (!mVariables.isEmpty()) {
@@ -99,7 +81,12 @@ public class PreferenceProcessor extends AbstractProcessor {
                     String iname = poets[i].getHostComplexClassName();
                     String jname = poets[j].getHostComplexClassName();
                     if (iname.equals(jname)) {
-                        Log.e(String.format("[Preference]\n*****\nSharedPreference is not allowed to be used in classes whichs classname is equal, such as [%s.%s, %s.%s]\n*****", poets[i].getGeneratePackageName(), iname, poets[j].getGeneratePackageName(), jname));
+                        Log.e(String.format(
+                                "[Preference]\n*****\nSharedPreference is not allowed to be used in classes whichs classname is equal, such as [%s.%s, %s.%s]\n*****",
+                                poets[i].getGeneratePackageName(),
+                                iname,
+                                poets[j].getGeneratePackageName(),
+                                jname));
                         return false;
                     }
                 }
@@ -113,6 +100,40 @@ public class PreferenceProcessor extends AbstractProcessor {
         }
 
 
+        return true;
+    }
+
+    private boolean parseElement(Class c, Element element) {
+        String variableName = element.toString();
+        TypeMirror variableType = element.asType();
+
+        if (ElementKind.FIELD != element.getKind()) {
+            Log.e(variableName + " should be a field variable");
+            return false;
+        }
+
+        for (Modifier modifier : element.getModifiers()) {
+            if (modifier == Modifier.PRIVATE) {
+                Log.e(variableName + " can not be Private");
+                return false;
+            }
+        }
+
+        TypeElement parentElement = (TypeElement) element.getEnclosingElement();
+        String packageName = mElements.getPackageOf(parentElement).getQualifiedName().toString();
+        String className = parentElement.getQualifiedName().toString();
+        String complexClassName = className.substring(className.indexOf(packageName) + packageName.length() + 1);//Inner Class
+
+        ParasitePoet variables = mVariables.get(className);
+        if (null == variables) {
+            variables = new ParasitePoet(mFiler, packageName, complexClassName);
+            mVariables.put(className, variables);
+        }
+        VariableEnity enity = new VariableEnity(variableName, variableType);
+        variables.getVariableNames().add(enity);
+        if (c.getName().equals(SharedPreferenceDynamic.class.getName())) {
+            enity.setDynamic(true);
+        }
         return true;
     }
 }

@@ -31,6 +31,8 @@ public abstract class CommonPoet {
     protected final String P_TARGET = "target";
     protected final String F_PUTIL = "mPUtil";
 
+    protected final String P_APPEND_KEY = "appendKey";
+
     protected final String FILE_HEADER = "\nThis file is generated and should not be edited!\n\nAuthor:qbaowei@qq.com\n";
 
     /**

@@ -20,6 +20,11 @@ public class VariableEnity {
 
     private String mType;//经典的包名类名组合(getCanonicalName)
 
+    /**
+     * true,表示key为与对应的变量的值绑定
+     */
+    private boolean isDynamic;
+
     public VariableEnity(String name, TypeMirror typeMirror) {
         mName = name;
         mTypeMirror = typeMirror;
@@ -50,5 +55,13 @@ public class VariableEnity {
         } else if ("boolean".equals(mType)) {
             mType = "java.lang.Boolean";
         }
+    }
+
+    public boolean isDynamic() {
+        return isDynamic;
+    }
+
+    public void setDynamic(boolean dynamic) {
+        isDynamic = dynamic;
     }
 }

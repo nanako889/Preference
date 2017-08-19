@@ -40,6 +40,13 @@ public class MainActivity extends Activity {
     @SharedPreference
     boolean man;
 
+    @SharedPreferenceDynamic
+    float mUserWeight;
+    @SharedPreferenceDynamic
+    int nickName;
+    @SharedPreference
+    int sLuck;
+
     private TestPreference mTestPreference = new TestPreference();
 
     private TestPreference.TestPreference1 mTestPreference1 = new TestPreference.TestPreference1();
@@ -70,6 +77,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Preference.MainActivity().restore(MainActivity.this);
+                Preference.MainActivity().restoreUserWeight(MainActivity.this, name);
                 mEt.setText(name);
                 mEtAge.setText(age + "");
                 mEtId.setText(id + "");
@@ -113,6 +121,8 @@ public class MainActivity extends Activity {
         String strWeight = mEtWeight.getText().toString();
         if (!TextUtils.isEmpty(strWeight)) {
             weight = Float.parseFloat(strWeight);
+            mUserWeight = weight;
+            Preference.MainActivity().saveUserWeight(this, name);//不同的用户名对应不同的重量
         }
 
         Preference.MainActivity().save(this);
