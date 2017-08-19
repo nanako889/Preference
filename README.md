@@ -24,9 +24,9 @@
         }
     }
 
-compile 'com.github.qbaowei.Preference:preference-core:1.4.0'
+compile 'com.github.qbaowei.Preference:preference-core:1.4.1'
 
-provided 'com.github.qbaowei.Preference:preference-compiler:1.4.0'
+provided 'com.github.qbaowei.Preference:preference-compiler:1.4.1'
 
 
 #作者
